@@ -9,14 +9,15 @@ import {
     ChevronDown,
     ChevronUp,
 } from "lucide-react";
+import { Link } from "react-router";
 
 const Card = () => {
 
     const [jobs, setJobs] = useState([])
 
+    // get job applications api call
     useEffect(() => {
         axios.get("http://localhost:3000/").then((res) => {
-            console.log(res.data);
             setJobs(res.data)
         }).catch(err => console.log(err))
     }, [])
@@ -34,6 +35,7 @@ const Card = () => {
         )
     }
 
+    // delete job applications api call
     const deleteHandler = (id) => {
         axios.delete(`http://localhost:3000/api/applications/${id}`).then((res) => {
             console.log("res from delele axios: ", res)
@@ -109,9 +111,9 @@ const Card = () => {
 
                             {/* Actions */}
                             <div className="mt-6 flex gap-4">
-                                <button className="flex items-center gap-2 rounded-full bg-violet-500 px-6 py-2 text-white hover:bg-violet-600">
+                                <Link to={`/edit-application/${job.id}`} className="flex items-center gap-2 rounded-full bg-violet-500 px-6 py-2 text-white hover:bg-violet-600">
                                     <Edit size={18} /> Edit
-                                </button>
+                                </Link>
                                 <button onClick={() => deleteHandler(job.id)} className="flex items-center gap-2 rounded-full bg-red-500 px-6 py-2 text-white hover:bg-red-600">
                                     <Trash2 size={18} /> Delete
                                 </button>

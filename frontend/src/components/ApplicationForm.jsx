@@ -5,7 +5,15 @@ import { Link, useNavigate } from "react-router";
 const ApplicationForm = () => {
 
     const navigate = useNavigate();
-    const [applicationInfo, setApplicationInfo] = useState([]);
+    const [applicationInfo, setApplicationInfo] = useState([{
+        company_name: "",
+        position: "",
+        application_status: "",
+        application_date: "",
+        salary_range: "",
+        location: "",
+        notes: ""
+    }]);
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -54,11 +62,11 @@ const ApplicationForm = () => {
                 <div className="space-y-1">
                     <label className="text-sm font-medium">Status</label>
                     <select
-                        value={applicationInfo.status || ""}
+                        value={applicationInfo.application_status || ""}
                         onChange={(e) =>
                             setApplicationInfo({
                                 ...applicationInfo,
-                                status: e.target.value
+                                application_status: e.target.value
                             })
                         }
                         className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -76,8 +84,8 @@ const ApplicationForm = () => {
                         Application Date
                     </label>
                     <input
-                        value={applicationInfo.applied_date}
-                        onChange={(e) => setApplicationInfo({ ...applicationInfo, applied_date: e.target.value })}
+                        value={applicationInfo.application_date}
+                        onChange={(e) => setApplicationInfo({ ...applicationInfo, application_date: e.target.value })}
                         required
                         type="date"
                         className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
