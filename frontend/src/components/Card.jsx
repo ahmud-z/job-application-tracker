@@ -34,6 +34,15 @@ const Card = () => {
         )
     }
 
+    const deleteHandler = (id) => {
+        axios.delete(`http://localhost:3000/api/applications/${id}`).then((res) => {
+            console.log("res from delele axios: ", res)
+            location.reload();
+        }).catch((err) => {
+            console.log("err from delele axios: ", err)
+        })
+    }
+
 
     return (
         <div>
@@ -103,7 +112,7 @@ const Card = () => {
                                 <button className="flex items-center gap-2 rounded-full bg-violet-500 px-6 py-2 text-white hover:bg-violet-600">
                                     <Edit size={18} /> Edit
                                 </button>
-                                <button className="flex items-center gap-2 rounded-full bg-red-500 px-6 py-2 text-white hover:bg-red-600">
+                                <button onClick={() => deleteHandler(job.id)} className="flex items-center gap-2 rounded-full bg-red-500 px-6 py-2 text-white hover:bg-red-600">
                                     <Trash2 size={18} /> Delete
                                 </button>
                             </div>
