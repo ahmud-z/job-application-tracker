@@ -5,11 +5,11 @@ const PORT = 3000;
 
 const app = express();
 
-
-// Middlewares
+// set middlewares
 app.use(cors());
+app.use(express.json())
 
-
+//  created db connection
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -19,6 +19,8 @@ const connection = mysql.createConnection({
 
 connection.connect()
 
+
+// send job applications list 
 app.get("/", (req, res) => {
     connection.query('SELECT * FROM job_applications', (err, result) => {
         if (err) {
@@ -28,8 +30,30 @@ app.get("/", (req, res) => {
     })
 })
 
-app.listen(PORT, "localhost", (err) => {
-    if (!err) {
-        console.log("Server Running At: http://localhost:3000")
-    }
+// create new job application post
+app.post("/api/create", (req, res) => {
+    const {
+        company_name,
+        position,
+        applied_date,
+        salary_range,
+        location,
+        notes,
+        status,
+    } = req.body;
+
+    const sql = 'INSERT INTO job_applications (company_name,position,application_status,application_date,salary_range,location,notes) VALUES (?,?,?,?,?,?,?)';
+
+    connection.query(sql, [company_name, position, status, applied_date, salary_range, location, notes], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database Error" })
+        }
+        res.status(201).json({ message: "Data Received", result })
+    })
 })
+
+
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+});
