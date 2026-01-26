@@ -54,6 +54,27 @@ app.post("/api/create", (req, res) => {
 })
 
 
+
+// delete job application
+app.delete("/api/applications/:id", (req, res) => {
+    const { id } = req.params;
+
+    console.log("Post ID: ", id)
+    const sql = `DELETE from job_applications WHERE id = ?`;
+
+    connection.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database Error" })
+        }
+
+        if (result.affectedRows === 0) {
+            res.status(400).json()
+        }
+        res.status(200).json({ message: "Job Application Deleted Succesfully", result })
+    })
+})
+
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
