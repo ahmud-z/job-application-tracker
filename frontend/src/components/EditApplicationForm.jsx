@@ -1,0 +1,186 @@
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router";
+
+const EditApplicationForm = () => {
+    const navigate = useNavigate();
+    const { id } = useParams();
+
+    const [applicationInfo, setApplicationInfo] = useState([{
+        company_name: "",
+        position: "",
+        application_status: "",
+        application_date: "",
+        salary_range: "",
+        location: "",
+        notes: ""
+    }]);
+
+    useEffect(() => {
+        axios
+            .get(`http://localhost:3000/api/applications/${id}`)
+            .then((res) => {
+                const formattedDate = new Date(res.data[0].application_date)
+                    .toISOString()
+                    .split("T")[0];
+                console.log(res.data[0]);
+
+                setApplicationInfo({ ...res.data[0], application_date: formattedDate });
+                console.log(typeof applicationInfo);
+
+            })
+            .catch((err) => console.log(err));
+    }, [id]);
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios
+            .put(
+                `http://localhost:3000/api/applications/${id}`, applicationInfo)
+            .then((res) => {
+                console.log("Updated successfully:", res.data);
+                navigate("/"); // redirect after update
+            })
+            .catch((err) => console.log(err));
+    };
+
+    return (
+        <div className="flex justify-center p-6">
+            <form
+                onSubmit={handleSubmit}
+                className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 space-y-4"
+            >
+                <h2 className="text-xl font-semibold text-center">
+                    Edit Job Application
+                </h2>
+
+                {/* Company Name */}
+                <div className="space-y-1">
+                    <label className="text-sm font-medium">Company Name</label>
+                    <input
+                        type="text"
+                        value={applicationInfo?.company_name || ""}
+                        onChange={(e) =>
+                            setApplicationInfo({ ...applicationInfo, company_name: e.target.value })
+                        }
+                        required
+                        placeholder="Google"
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                </div>
+
+                {/* Job Role */}
+                <div className="space-y-1">
+                    <label className="text-sm font-medium">Job Role</label>
+                    <input
+                        type="text"
+                        value={applicationInfo?.position || ""}
+                        onChange={(e) =>
+                            setApplicationInfo({ ...applicationInfo, position: e.target.value })
+                        }
+                        required
+                        placeholder="Frontend Developer"
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                </div>
+
+                {/* Status */}
+                <div className="space-y-1">
+                    <label className="text-sm font-medium">Status</label>
+                    <select
+                        value={applicationInfo?.application_status}
+                        onChange={(e) =>
+                            setApplicationInfo({ ...applicationInfo, application_status: e.target.value })
+                        }
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                        <option value="" disabled>
+                            Select status
+                        </option>
+                        <option value="Applied">Applied</option>
+                        <option value="Interview">Interview</option>
+                        <option value="Offer">Offer</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+
+                {/* Application Date */}
+                <div className="space-y-1">
+                    <label className="text-sm font-medium">Application Date</label>
+                    <input
+                        type="date"
+                        value={applicationInfo?.application_date || ""}
+                        onChange={(e) =>
+                            setApplicationInfo({ ...applicationInfo, application_date: e.target.value })
+                        }
+                        required
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                </div>
+
+                {/* Salary Range */}
+                <div className="space-y-1">
+                    <label className="text-sm font-medium">Salary Range</label>
+                    <input
+                        type="text"
+                        value={applicationInfo?.salary_range || ""}
+                        onChange={(e) =>
+                            setApplicationInfo({ ...applicationInfo, salary_range: e.target.value })
+                        }
+                        required
+                        placeholder="$60k - $80k"
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                </div>
+
+                {/* Location */}
+                <div className="space-y-1">
+                    <label className="text-sm font-medium">Location</label>
+                    <input
+                        type="text"
+                        value={applicationInfo?.location || ""}
+                        onChange={(e) =>
+                            setApplicationInfo({ ...applicationInfo, location: e.target.value })
+                        }
+                        required
+                        placeholder="Remote / New York"
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                </div>
+
+                {/* Notes */}
+                <div className="space-y-1">
+                    <label className="text-sm font-medium">Notes</label>
+                    <textarea
+                        value={applicationInfo?.notes || ""}
+                        onChange={(e) =>
+                            setApplicationInfo({ ...applicationInfo, notes: e.target.value })
+                        }
+                        rows="3"
+                        placeholder="Any extra details..."
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-end gap-3 pt-4">
+                    <Link
+                        to="/"
+                        className="rounded-md border border-gray-300 px-4 py-2 text-sm hover:bg-gray-100"
+                    >
+                        Cancel
+                    </Link>
+                    <button
+                        type="submit"
+                        className="rounded-md bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700"
+                    >
+                        Update Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
+};
+
+export default EditApplicationForm;
