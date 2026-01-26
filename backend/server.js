@@ -30,21 +30,33 @@ app.get("/", (req, res) => {
     })
 })
 
+// send single job applications based on id 
+app.get("/api/applications/:id", (req, res) => {
+    const { id } = req.params;
+    connection.query('SELECT * FROM job_applications WHERE id = ?', [id], (err, result) => {
+        if (err) {
+            throw err
+        }
+        res.send(result)
+    })
+})
+
+
 // create new job application post
 app.post("/api/create", (req, res) => {
     const {
         company_name,
         position,
-        applied_date,
+        application_date,
         salary_range,
         location,
         notes,
-        status,
+        application_status,
     } = req.body;
 
     const sql = 'INSERT INTO job_applications (company_name,position,application_status,application_date,salary_range,location,notes) VALUES (?,?,?,?,?,?,?)';
 
-    connection.query(sql, [company_name, position, status, applied_date, salary_range, location, notes], (err, result) => {
+    connection.query(sql, [company_name, position, application_status, application_date, salary_range, location, notes], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: "Database Error" })
@@ -54,12 +66,38 @@ app.post("/api/create", (req, res) => {
 })
 
 
+// edit a job application post
+app.put("/api/applications/:id", (req, res) => {
+    const { id } = req.params;
+    const {
+        company_name,
+        position,
+        application_date,
+        salary_range,
+        location,
+        notes,
+        application_status,
+    } = req.body;
+
+    console.log(req.body);
+
+    const sql = `UPDATE job_applications SET company_name = ?, position = ?, application_status = ?, application_date = ?, salary_range = ?, location = ?, notes = ? WHERE id = ?`;
+
+    connection.query(sql, [company_name, position, application_status, application_date, salary_range, location, notes, id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database Error" })
+        }
+        res.status(200).json({ message: "Application updated successfully", result })
+    })
+})
+
 
 // delete job application
 app.delete("/api/applications/:id", (req, res) => {
     const { id } = req.params;
 
-    console.log("Post ID: ", id)
+    console.log("Deleted Post ID: ", id)
     const sql = `DELETE from job_applications WHERE id = ?`;
 
     connection.query(sql, [id], (err, result) => {
