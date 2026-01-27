@@ -29,7 +29,7 @@ const ApplicationForm = () => {
     }
 
     return (
-        <div className="flex justify-center p-6">
+        <div className="flex justify-center bg-gray-800 items-center h-screen p-6">
             <form onSubmit={handleSubmit} className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 space-y-4">
                 <h2 className="text-xl font-semibold text-center">
                     Add Job Application
@@ -74,7 +74,7 @@ const ApplicationForm = () => {
                         <option value="" disabled>Select status</option>
                         <option value="Applied">Applied</option>
                         <option value="Interview">Interview</option>
-                        <option value="Offer">Offer</option>
+                        <option value="Accepted">Accepted</option>
                         <option value="Rejected">Rejected</option>
                     </select>
                 </div>
@@ -99,7 +99,7 @@ const ApplicationForm = () => {
                         onChange={(e) => setApplicationInfo({ ...applicationInfo, salary_range: e.target.value })}
                         required
                         type="text"
-                        placeholder="$60k - $80k"
+                        placeholder="৳60k - ৳80k"
                         className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                 </div>
@@ -111,7 +111,7 @@ const ApplicationForm = () => {
                         onChange={(e) => setApplicationInfo({ ...applicationInfo, location: e.target.value })}
                         required
                         type="text"
-                        placeholder="Remote / New York"
+                        placeholder="Remote / Mirpur-10"
                         className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                 </div>
@@ -136,7 +136,7 @@ const ApplicationForm = () => {
                     </Link>
                     <button
                         type="submit"
-                        className="rounded-md bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700"
+                        className="rounded-md bg-indigo-600 cursor-pointer px-4 py-2 text-sm text-white hover:bg-indigo-700"
                     >
                         Add Application
                     </button>

@@ -8,6 +8,8 @@ import {
     Trash2,
     ChevronDown,
     ChevronUp,
+    NotebookPen,
+    Search
 } from "lucide-react";
 import { Link } from "react-router";
 
@@ -47,12 +49,41 @@ const Card = () => {
 
 
     return (
-        <div>
+        <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col space-y-4 py-8">
+                <h1 className="text-3xl font-medium">Job Application Counts by Status</h1>
+                <div className="flex justify-between gap-4">
+                    <div className="bg-emerald-200/10 py-10 w-full border-2 border-green-400/40 rounded-2xl text-center space-y-2">
+                        <p className="text-4xl font-bold">5</p>
+                        <p className="text-xl font-medium text-green-500">Accepted</p>
+                    </div>
+                    <div className="bg-emerald-200/10 py-10 w-full border-2 border-green-400/40 rounded-2xl text-center space-y-2">
+                        <p className="text-4xl font-bold">5</p>
+                        <p className="text-xl font-medium text-green-500">Accepted</p>
+                    </div>
+                    <div className="bg-emerald-200/10 py-10 w-full border-2 border-green-400/40 rounded-2xl text-center space-y-2">
+                        <p className="text-4xl font-bold">5</p>
+                        <p className="text-xl font-medium text-green-500">Accepted</p>
+                    </div>
+                    <div className="bg-emerald-200/10 py-10 w-full border-2 border-green-400/40 rounded-2xl text-center space-y-2">
+                        <p className="text-4xl font-bold">5</p>
+                        <p className="text-xl font-medium text-green-500">Accepted</p>
+                    </div>
+                </div>
+
+                <div className="relative">
+                    <div className="absolute top-1/2 left-3 -translate-y-1/2">
+                        <Search className="text-gray-600" />
+                    </div>
+                    <input type="text" placeholder="Search by Company or Status" className="border-2 border-gray-400 placeholder:text-lg placeholder:font-medium rounded-xl w-full py-4 px-10" />
+                </div>
+            </div>
+
             {
                 jobs.map((job, idx) => (
-                    <div key={idx} className="max-w-6xl mx-auto my-8 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition">
+                    <div key={idx} onClick={() => previewStatusHandler(job.id)} className="mx-auto mb-5 rounded-2xl border-2 border-gray-200 hover:border-violet-200 bg-white p-6 hover:shadow-md transition">
                         {/* Header */}
-                        <div className="flex items-start justify-between">
+                        <div className="flex items-center justify-between">
                             <div>
                                 <h1 className="text-xl font-semibold text-gray-800">
                                     {job.position}
@@ -60,7 +91,11 @@ const Card = () => {
                                 <p className="text-sm text-gray-500">{job.company_name}</p>
 
                                 <div className="mt-3 flex gap-3">
-                                    <span className="rounded-full bg-amber-100 px-4 py-1 text-sm font-medium text-amber-700">
+                                    <span className={`rounded-full px-4 py-1 text-sm font-medium
+                                         ${job.application_status === "Accepted" ? "bg-emerald-200/30 border border-green-400/30 text-green-500"
+                                            : job.application_status === "Rejected" ? "bg-red-200/30 border border-red-400/30 text-red-500"
+                                                : job.application_status === "Applied" ? "bg-blue-200/30 border border-blue-400/30 text-blue-500"
+                                                    : "bg-violet-200/30 border border-violet-400/30 text-violet-500"}`}>
                                         {job.application_status}
                                     </span>
                                     <span className="rounded-full bg-gray-100 px-4 py-1 text-sm text-gray-600">
@@ -69,7 +104,7 @@ const Card = () => {
                                 </div>
                             </div>
 
-                            <button onClick={() => previewStatusHandler(job.id)} className="rounded-full p-2 hover:bg-gray-100">
+                            <button className="rounded-full p-2 hover:bg-gray-100 cursor-pointer">
                                 {job.previewStatus ? <ChevronUp /> : <ChevronDown />}
                             </button>
                         </div>
@@ -100,7 +135,7 @@ const Card = () => {
 
                             {/* Notes */}
                             <div className="flex gap-3">
-                                <MapPin className="mt-1 text-gray-400" />
+                                <NotebookPen className="mt-1 text-gray-400" />
                                 <div>
                                     <p className="text-sm font-semibold text-gray-600">NOTES</p>
                                     <p className="mt-1 rounded-xl bg-gray-50 p-4 text-sm text-gray-700">

@@ -100,7 +100,7 @@ const EditApplicationForm = () => {
                         </option>
                         <option value="Applied">Applied</option>
                         <option value="Interview">Interview</option>
-                        <option value="Offer">Offer</option>
+                        <option value="Accepted">Accepted</option>
                         <option value="Rejected">Rejected</option>
                     </select>
                 </div>
