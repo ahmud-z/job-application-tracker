@@ -17,6 +17,7 @@ const Card = () => {
 
     const [jobs, setJobs] = useState([])
     const [allJobs, setAllJobs] = useState([])
+    const [jobsCount, setJobsCount] = useState({});
 
     // get job applications api call
     useEffect(() => {
@@ -30,8 +31,17 @@ const Card = () => {
 
                 setAllJobs(data)
                 setJobs(sorted)
+
+                const countByStatus = data.reduce((acc, job) => {
+                    acc[job.application_status] =
+                        (acc[job.application_status] || 0) + 1
+                    return acc
+                }, {})
+                setJobsCount(countByStatus)
+                console.log(countByStatus);
             })
     }, [])
+
 
 
     const previewStatusHandler = (id) => {
@@ -75,9 +85,7 @@ const Card = () => {
             setJobs(allJobs);
             return;
         }
-
         const filteredJobs = [...allJobs].filter((job) => job.application_status === status);
-
         setJobs(filteredJobs);
     }
 
@@ -89,22 +97,17 @@ const Card = () => {
                     <h1 className="text-3xl font-medium">Summary</h1>
                 </div>
                 <div className="flex justify-between gap-4">
-                    <div className="bg-emerald-200/10 py-10 w-full border-2 border-green-400/40 rounded-2xl text-center space-y-2">
-                        <p className="text-4xl font-bold">5</p>
-                        <p className="text-xl font-medium text-green-500">Accepted</p>
-                    </div>
-                    <div className="bg-emerald-200/10 py-10 w-full border-2 border-green-400/40 rounded-2xl text-center space-y-2">
-                        <p className="text-4xl font-bold">5</p>
-                        <p className="text-xl font-medium text-green-500">Accepted</p>
-                    </div>
-                    <div className="bg-emerald-200/10 py-10 w-full border-2 border-green-400/40 rounded-2xl text-center space-y-2">
-                        <p className="text-4xl font-bold">5</p>
-                        <p className="text-xl font-medium text-green-500">Accepted</p>
-                    </div>
-                    <div className="bg-emerald-200/10 py-10 w-full border-2 border-green-400/40 rounded-2xl text-center space-y-2">
-                        <p className="text-4xl font-bold">5</p>
-                        <p className="text-xl font-medium text-green-500">Accepted</p>
-                    </div>
+                    {
+                        Object.keys(jobsCount).map((key) => (
+                            <div
+                                key={key}
+                                className={`py-10 hover:scale-[0.95] transition duration-150 w-full border-2 ${key === "Applied" ? "border-blue-400/40 bg-blue-200/10" : key === "Rejected" ? "border-red-400/40 bg-red-200/10" : key === "Accepted" ? "border-emerald-400/40 bg-emerald-200/10" : "border-amber-400/40 bg-amber-200/10"}  rounded-2xl text-center space-y-2`}>
+                                <span className={`text-xl font-medium ${key === "Applied" ? "text-blue-500" : key === "Rejected" ? "text-red-500" : key === "Accepted" ? "text-green-500" : "text-amber-500"}`}>
+                                    <p className={`text-4xl font-bold`}>{jobsCount[key]}</p>
+                                    {key}</span>
+                            </div>
+                        ))
+                    }
                 </div>
 
                 <div className="relative">
@@ -220,7 +223,7 @@ const Card = () => {
                     ))
                 )
             }
-        </div>
+        </div >
     );
 };
 
