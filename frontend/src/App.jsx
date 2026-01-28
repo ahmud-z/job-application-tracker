@@ -6,8 +6,8 @@ const App = () => {
 
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div className="border-b  border-gray-300">
+    <div className="bg-gray-100 min-h-screen pb-4">
+      <div className="border-b border-gray-300">
         <nav className='flex items-center justify-between max-w-6xl mx-auto py-4 px-4'>
           <div className="space-y-1.5">
             <h1 className='text-4xl font-bold'>Job Application Tracker</h1>

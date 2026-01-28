@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import axios from 'axios';
 import {
     MapPin,
@@ -11,22 +11,33 @@ import {
     NotebookPen,
     Search
 } from "lucide-react";
-import { Link } from "react-router";
+import { data, Link } from "react-router";
 
 const Card = () => {
 
     const [jobs, setJobs] = useState([])
+    const [allJobs, setAllJobs] = useState([])
 
     // get job applications api call
+
     useEffect(() => {
-        axios.get("http://localhost:3000/").then((res) => {
-            setJobs(res.data)
-        }).catch(err => console.log(err))
+        axios.get("http://localhost:3000/")
+            .then(res => {
+                const data = res.data
+
+                // default: All + A–Z
+                const sorted = [...data].sort((a, b) =>
+                    a.company_name.localeCompare(b.company_name)
+                )
+
+                setAllJobs(data)
+                setJobs(sorted)
+            })
     }, [])
 
 
-    if (!jobs) {
-        return (<p>Loading...</p>)
+    if (jobs.length === 0) {
+        return <p>Loading...</p>;
     }
 
     const previewStatusHandler = (id) => {
@@ -48,10 +59,40 @@ const Card = () => {
     }
 
 
+    const sortHandler = (sortType) => {
+        if (sortType === "a-z") {
+            const sortedJobs = [...jobs].sort((a, b) =>
+                a.company_name.localeCompare(b.company_name)
+            );
+            setJobs(sortedJobs);
+        } else {
+            const sortedJobs = [...jobs].sort(
+                (a, b) =>
+                    Date.parse(b.application_date) -
+                    Date.parse(a.application_date)
+            );
+            setJobs(sortedJobs);
+        }
+    };
+
+    const filterHandler = (status) => {
+
+        if (status === "All") {
+            setJobs(allJobs);
+            return;
+        }
+
+        const filteredJobs = [...allJobs].filter((job) => job.application_status === status);
+        setJobs(filteredJobs);
+    }
+
+
     return (
         <div className="max-w-6xl mx-auto">
             <div className="flex flex-col space-y-4 py-8">
-                <h1 className="text-3xl font-medium">Job Application Counts by Status</h1>
+                <div>
+                    <h1 className="text-3xl font-medium">Job Application Counts by Status</h1>
+                </div>
                 <div className="flex justify-between gap-4">
                     <div className="bg-emerald-200/10 py-10 w-full border-2 border-green-400/40 rounded-2xl text-center space-y-2">
                         <p className="text-4xl font-bold">5</p>
@@ -76,6 +117,26 @@ const Card = () => {
                         <Search className="text-gray-600" />
                     </div>
                     <input type="text" placeholder="Search by Company or Status" className="border-2 border-gray-400 placeholder:text-lg placeholder:font-medium rounded-xl w-full py-4 px-10" />
+                </div>
+
+
+                <div className="flex space-x-8">
+                    <div className="">
+                        <select onChange={(e) => filterHandler(e.target.value)} name="" id="" className="border py-2 px-4 rounded">
+                            <option value="All">All Status</option>
+                            <option value="Applied">Applied</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Interview">Interviewing</option>
+                        </select>
+                    </div>
+
+                    <div className="">
+                        <select onChange={(e) => sortHandler(e.target.value)} name="" id="" className="border py-2 px-4 rounded">
+                            <option value="a-z">Sort: A-Z</option>
+                            <option value="by-date">Sort: Latest First</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
