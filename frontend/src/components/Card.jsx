@@ -9,7 +9,9 @@ import {
     ChevronDown,
     ChevronUp,
     NotebookPen,
-    Search
+    Search,
+    Cross,
+    X
 } from "lucide-react";
 import { data, Link } from "react-router";
 
@@ -18,6 +20,24 @@ const Card = () => {
     const [jobs, setJobs] = useState([])
     const [allJobs, setAllJobs] = useState([])
     const [jobsCount, setJobsCount] = useState({});
+    const [query, setQuery] = useState("")
+
+
+    useEffect(() => {
+        const filtered = allJobs.filter(job =>
+            job.company_name.toLowerCase().includes(query.toLowerCase()) ||
+            job.position.toLowerCase().includes(query.toLowerCase()) ||
+            job.application_status.toLowerCase().includes(query.toLowerCase())
+        );
+
+        setJobs(filtered);
+    }, [query, allJobs]);
+
+
+    const clearSearchFieldHandler = () => {
+        setQuery("")
+    }
+
 
     // get job applications api call
     useEffect(() => {
@@ -112,9 +132,13 @@ const Card = () => {
 
                 <div className="relative">
                     <div className="absolute top-1/2 left-3 -translate-y-1/2">
-                        <Search className="text-gray-600" />
+                        <Search size={22} className="text-gray-600" />
                     </div>
-                    <input type="text" placeholder="Search by Company or Status" className="border-2 border-gray-400 placeholder:text-lg placeholder:font-medium rounded-xl w-full py-4 px-10" />
+                    <input value={query} onChange={(e) => setQuery(e.target.value)} type="text" placeholder="Search by Company or Status" className="border-2 border-gray-400 placeholder:text-lg placeholder:font-medium rounded-xl w-full py-4 px-10" />
+
+                    <div onClick={clearSearchFieldHandler} className="absolute top-1/2 -translate-y-1/2 right-4 p-1 bg-gray-200 hover:bg-gray-300 rounded-full cursor-pointer">
+                        <X size={22} />
+                    </div>
                 </div>
 
 
