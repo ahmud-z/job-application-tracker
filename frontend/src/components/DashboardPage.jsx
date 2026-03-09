@@ -31,7 +31,7 @@ const DashboardPage = () => {
                 setCountByStatus(counts);
             })
             .catch(err => {
-                console.log(err.message);
+                localStorage.removeItem('token')
                 navigate("/login");
             });
     }, []);
