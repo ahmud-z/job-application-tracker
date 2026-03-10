@@ -17,7 +17,6 @@ const LoginPage = () => {
         api.post("/login", userInfo)
             .then((res) => {
                 setUserInfo({ ...userInfo, email: "", password: "" })
-                console.log(res.data.token);
                 localStorage.setItem("token", res.data.token)
                 navigate("/dashboard");
             })
