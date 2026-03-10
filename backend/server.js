@@ -19,8 +19,8 @@ app.get('/', (req, res) => {
     res.send("Hola User!")
 })
 
-app.use('/api', userRoutes)
-app.use('/api', applicationRoutes)
+app.use('/', userRoutes)
+app.use('/', applicationRoutes)
 
 app.listen(PORT, async () => {
     console.log(`Server running at http://localhost:${PORT}`)
