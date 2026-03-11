@@ -1,174 +1,136 @@
-import { ChevronDown, MapPin, Calendar, DollarSign, Pencil, Trash2, Briefcase } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import React, { useState } from "react";
 import { Link } from "react-router";
 
 const ApplicationCard = ({ application, handleDelete }) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const statusConfig = {
-        rejected: { bg: "bg-red-500/10", text: "text-red-400", border: "border-red-500/20", dot: "bg-red-400", label: "Rejected" },
-        interviewing: { bg: "bg-amber-500/10", text: "text-amber-400", border: "border-amber-500/20", dot: "bg-amber-400", label: "Interviewing" },
-        offered: { bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/20", dot: "bg-emerald-400", label: "Offered" },
-        applied: { bg: "bg-sky-500/10", text: "text-sky-400", border: "border-sky-500/20", dot: "bg-sky-400", label: "Applied" },
+    const statusColors = {
+        rejected: "bg-red-500/10 text-red-300 border border-red-500/30",
+        interviewing: "bg-yellow-500/10 text-yellow-300 border border-yellow-500/30",
+        offered: "bg-emerald-500/10 text-emerald-300 border border-emerald-500/30",
+        applied: "bg-blue-500/10 text-blue-300 border border-blue-500/30",
     };
 
-    const status = statusConfig[application.status] || {
-        bg: "bg-zinc-700/30", text: "text-zinc-400", border: "border-zinc-600/20", dot: "bg-zinc-400", label: application.status
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+        });
     };
-
-    const formatDate = (dateStr) =>
-        new Date(dateStr).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 
     return (
-        <div
-            className="group relative rounded-2xl overflow-hidden transition-all duration-300"
-            style={{
-                background: "linear-gradient(145deg, #18181b, #111113)",
-                border: "1px solid rgba(255,255,255,0.06)",
-                boxShadow: isOpen
-                    ? "0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)"
-                    : "0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)",
-            }}
-        >
-            {/* Subtle top highlight line */}
-            <div className="absolute top-0 left-6 right-6 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)" }} />
+        <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-xl p-7 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-zinc-700">
 
-            {/* Status accent bar */}
-            <div
-                className="absolute left-0 top-4 bottom-4 w-0.5 rounded-full opacity-60"
-                style={{ background: status.dot.includes("red") ? "#f87171" : status.dot.includes("amber") ? "#fbbf24" : status.dot.includes("emerald") ? "#34d399" : "#38bdf8" }}
-            />
-
-            <div className="p-5 pl-6">
-                {/* Header Row */}
-                <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-start gap-3 min-w-0">
-                        {/* Company Icon */}
-                        <div className="mt-0.5 flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center"
-                            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                            <Briefcase size={16} className="text-zinc-400" />
-                        </div>
-                        <div className="min-w-0">
-                            <h2 className="text-base font-semibold text-white leading-snug truncate" style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "-0.01em" }}>
-                                {application.companyName}
-                            </h2>
-                            <p className="text-sm text-zinc-500 truncate mt-0.5">{application.role}</p>
-                        </div>
-                    </div>
-
-                    {/* Toggle Button */}
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200"
-                        style={{
-                            background: isOpen ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.04)",
-                            border: "1px solid rgba(255,255,255,0.07)",
-                            color: "#a1a1aa",
-                        }}
-                        onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.1)"}
-                        onMouseLeave={e => e.currentTarget.style.background = isOpen ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.04)"}
-                    >
-                        <ChevronDown
-                            size={15}
-                            style={{
-                                transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-                                transition: "transform 0.25s ease",
-                            }}
-                        />
-                    </button>
+            {/* Header */}
+            <div className="flex items-start justify-between">
+                <div className="space-y-1">
+                    <h2 className="text-2xl font-bold text-white tracking-tight">
+                        {application.companyName}
+                    </h2>
+                    <p className="text-lg text-zinc-300 font-medium">
+                        {application.role}
+                    </p>
                 </div>
 
-                {/* Badges Row */}
-                <div className="flex items-center gap-2 mt-4 flex-wrap">
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg ${status.bg} ${status.text} border ${status.border}`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} />
-                        {status.label}
-                    </span>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-lg bg-violet-500/10 text-violet-400 border border-violet-500/20">
-                        <DollarSign size={10} strokeWidth={2.5} />
-                        {Number(application.salary).toLocaleString()} BDT
-                    </span>
-                </div>
-
-                {/* Expandable Section */}
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateRows: isOpen ? "1fr" : "0fr",
-                        transition: "grid-template-rows 0.28s ease",
-                    }}
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="bg-zinc-800 hover:bg-zinc-700 transition rounded-full w-11 h-11 flex items-center justify-center text-zinc-200 border border-zinc-700"
                 >
-                    <div style={{ overflow: "hidden" }}>
-                        <div className="pt-4 mt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                    {isOpen ? <ChevronUp size={22} /> : <ChevronDown size={22} />}
+                </button>
+            </div>
 
-                            {/* Meta Info */}
-                            <div className="grid grid-cols-2 gap-3 mb-3">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
-                                        style={{ background: "rgba(255,255,255,0.04)" }}>
-                                        <Calendar size={11} className="text-zinc-500" />
-                                    </div>
-                                    <div>
-                                        <p className="text-xs text-zinc-600 leading-none mb-0.5">Applied</p>
-                                        <p className="text-xs text-zinc-300 font-medium">{formatDate(application.appliedDate)}</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
-                                        style={{ background: "rgba(255,255,255,0.04)" }}>
-                                        <MapPin size={11} className="text-zinc-500" />
-                                    </div>
-                                    <div>
-                                        <p className="text-xs text-zinc-600 leading-none mb-0.5">Location</p>
-                                        <p className="text-xs text-zinc-300 font-medium truncate">{application.location}</p>
-                                    </div>
-                                </div>
-                            </div>
+            {/* Status + Salary */}
+            <div className="flex items-center gap-3 mt-5 flex-wrap">
+                <span
+                    className={`px-4 py-2 text-base font-semibold rounded-full ${statusColors[application.status] ||
+                        "bg-zinc-800 text-zinc-200 border border-zinc-700"
+                        }`}
+                >
+                    {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
+                </span>
 
-                            {/* Notes */}
-                            {application.notes && (
-                                <div className="mb-4 px-3 py-2.5 rounded-xl text-xs text-zinc-400 leading-relaxed"
-                                    style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}>
-                                    <span className="text-zinc-600 font-medium">Notes · </span>
-                                    {application.notes}
-                                </div>
-                            )}
+                <span className="px-4 py-2 text-base font-semibold rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/30">
+                    {new Intl.NumberFormat("en-BD", {
+                        style: "currency",
+                        currency: "BDT",
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                    }).format(application.salary)}
+                </span>
+            </div>
 
-                            {/* Action Buttons */}
-                            <div className="flex gap-2">
-                                <Link
-                                    to={`/edit-application/${application._id}`}
-                                    className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold rounded-xl transition-all duration-200"
-                                    style={{
-                                        background: "rgba(251,191,36,0.1)",
-                                        color: "#fbbf24",
-                                        border: "1px solid rgba(251,191,36,0.2)",
-                                    }}
-                                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(251,191,36,0.18)"; e.currentTarget.style.borderColor = "rgba(251,191,36,0.35)"; }}
-                                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(251,191,36,0.1)"; e.currentTarget.style.borderColor = "rgba(251,191,36,0.2)"; }}
-                                >
-                                    <Pencil size={12} strokeWidth={2.5} />
-                                    Edit
-                                </Link>
-                                <button
-                                    onClick={() => handleDelete(application._id)}
-                                    className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold rounded-xl transition-all duration-200"
-                                    style={{
-                                        background: "rgba(239,68,68,0.1)",
-                                        color: "#f87171",
-                                        border: "1px solid rgba(239,68,68,0.2)",
-                                    }}
-                                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(239,68,68,0.18)"; e.currentTarget.style.borderColor = "rgba(239,68,68,0.35)"; }}
-                                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(239,68,68,0.1)"; e.currentTarget.style.borderColor = "rgba(239,68,68,0.2)"; }}
-                                >
-                                    <Trash2 size={12} strokeWidth={2.5} />
-                                    Delete
-                                </button>
-                            </div>
+            {/* Quick Info */}
+            <div className="flex items-center gap-6 mt-5 text-base text-zinc-300">
+
+                <span className="flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {application.location}
+                </span>
+
+                <span className="flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    Applied: {formatDate(application.appliedDate)}
+                </span>
+            </div>
+
+            {/* Expanded Section */}
+            {isOpen && (
+                <div className="mt-6 pt-6 border-t border-zinc-800 space-y-5">
+
+                    {/* Details */}
+                    <div className="grid grid-cols-2 gap-4 text-base">
+                        <div className="bg-zinc-800/40 rounded-lg p-4">
+                            <p className="text-zinc-400 text-sm mb-1">Application Date</p>
+                            <p className="text-zinc-100 font-medium">
+                                {formatDate(application.appliedDate)}
+                            </p>
+                        </div>
+
+                        <div className="bg-zinc-800/40 rounded-lg p-4">
+                            <p className="text-zinc-400 text-sm mb-1">Location</p>
+                            <p className="text-zinc-100 font-medium">
+                                {application.location}
+                            </p>
                         </div>
                     </div>
+
+                    {/* Notes */}
+                    {application.notes && (
+                        <div className="bg-zinc-800/40 rounded-lg p-4">
+                            <p className="text-zinc-400 text-sm mb-2">Notes</p>
+                            <p className="text-zinc-200 text-base leading-relaxed">
+                                {application.notes}
+                            </p>
+                        </div>
+                    )}
+
+                    {/* Buttons */}
+                    <div className="flex gap-3 pt-2">
+                        <Link
+                            to={`/edit-application/${application._id}`}
+                            className="flex-1 px-4 py-3 text-base font-semibold rounded-lg bg-yellow-400 hover:bg-yellow-500 transition text-black text-center shadow-lg shadow-yellow-500/20"
+                        >
+                            Edit Application
+                        </Link>
+
+                        <button
+                            onClick={() => handleDelete(application._id)}
+                            className="flex-1 px-4 py-3 text-base font-semibold rounded-lg bg-red-500/20 hover:bg-red-500/10 transition text-red-400 cursor-pointer border border-red-500/30"
+                        >
+                            Delete
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };
