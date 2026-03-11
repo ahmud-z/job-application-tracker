@@ -124,7 +124,7 @@ const ApplicationCard = ({ application, handleDelete }) => {
 
                         <button
                             onClick={() => handleDelete(application._id)}
-                            className="flex-1 px-4 py-3 text-base font-semibold rounded-lg bg-red-500/20 hover:bg-red-500/10 transition text-red-400 cursor-pointer border border-red-500/30"
+                            className="flex-1 px-4 py-3 text-base font-semibold rounded-lg bg-red-600 hover:bg-red-700 transition text-white cursor-pointer border border-red-500/30"
                         >
                             Delete
                         </button>
