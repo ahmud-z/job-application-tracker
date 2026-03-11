@@ -1,19 +1,10 @@
 # Job Application Tracker
 
-A web application to manage and track job applications efficiently. Users can add, update, search, filter, and delete job applications in one place.
+A full-stack web application to manage and track job applications. Users can add, update, search, filter, and delete job applications in one place.
 
----
-
-## Features
-
-- Add new job applications
-- Search applications by company name
-- Filter applications by status
-- Sort applications by date and company name
-- Edit or update existing applications
-- Delete applications
-
----
+## Live Demo
+Frontend: https://job-application-tracer.vercel.app/  
+Backend API: https://job-application-tracker-vrbh.onrender.com/
 
 ## Tech Stack
 
@@ -27,19 +18,26 @@ A web application to manage and track job applications efficiently. Users can ad
 - Node.js
 - Express.js
 - MongoDB
+- JWT Authentication
+- Bcrypt Encryption
 
 ### Deployment
-- Vercel (Frontend)
-- Render (Backend)
+- Vercel
+- Render
 
----
+## Features
+- Add new job applications
+- Search applications by company name
+- Filter applications by status
+- Sort applications by date and company name
+- Edit or update existing applications
+- Delete applications
 
 ## Project Preview
-
-<img width="1058" height="901" alt="Screenshot 4" src="https://github.com/user-attachments/assets/8fdbf132-be28-4dac-baba-dc405c4a7e80" />
-<img width="1055" height="899" alt="Screenshot 3" src="https://github.com/user-attachments/assets/4bd4bd1b-9818-464a-88ed-4d422f14ec97" />
-<img width="1056" height="642" alt="Screenshot 2" src="https://github.com/user-attachments/assets/dbea5dab-afb2-4bb0-b3cc-bcb917161f51" />
-<img width="1053" height="891" alt="Screenshot 1" src="https://github.com/user-attachments/assets/de9570d5-fc0b-4ab4-af26-3c1ebc7e748b" />
+<img width="1053" height="891" alt="Screenshot_13" src="https://github.com/user-attachments/assets/132ebc13-d48d-4e0f-b91f-fe880e0abe26" />
+<img width="1056" height="642" alt="Screenshot_12" src="https://github.com/user-attachments/assets/9d37ca83-d313-40e1-a972-f40ae942d90d" />
+<img width="1055" height="899" alt="Screenshot_10" src="https://github.com/user-attachments/assets/20a2b8a6-ffae-490b-bc55-4bd21be081a1" />
+<img width="1058" height="901" alt="Screenshot_9" src="https://github.com/user-attachments/assets/ba596b05-fe86-441e-9ae8-817358e76ec3" />
 
 ---
 
@@ -47,22 +45,26 @@ A web application to manage and track job applications efficiently. Users can ad
 
 Follow these steps to run the project locally.
 
-### Clone the repository
-```bash
+### 1. Clone the repository
 git clone https://github.com/ahmud-z/job-application-tracker.git
-```
 
-### Navigate to the project directory
-```bash
+### 2. Navigate to the project folder
 cd job-application-tracker
-```
 
-### Install dependencies
-```bash
+### 3. Setup Backend
+cd backend
 npm install
-```
 
-### Run the project
-```bash
+Create a `.env` file in the backend folder and add the required environment variables.
+
+Run the backend server:
 npm run dev
-```
+
+### 4. Setup Frontend
+Open a new terminal and navigate to the frontend folder:
+
+cd frontend
+npm install
+
+Run the frontend development server:
+npm run dev
