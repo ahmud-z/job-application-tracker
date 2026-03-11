@@ -185,7 +185,7 @@ const CreateApplication = () => {
                             </div>
                         </div>
 
-                        <div className="space-y-2">
+                        {/* <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
                                 <DockIcon size={16} className="text-blue-400" />
                                 CV/Resume
@@ -193,7 +193,7 @@ const CreateApplication = () => {
 
                             <input type="file" className='w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all' />
 
-                        </div>
+                        </div> */}
 
                         {/* Notes */}
                         <div className="space-y-2">
