@@ -13,10 +13,10 @@ JWT Authentication for protected routes
 
 ## Project Preview
 
+<img width="1058" height="901" alt="Screenshot_9" src="https://github.com/user-attachments/assets/ba596b05-fe86-441e-9ae8-817358e76ec3" />
 <img width="1053" height="891" alt="Screenshot_13" src="https://github.com/user-attachments/assets/132ebc13-d48d-4e0f-b91f-fe880e0abe26" />
 <img width="1056" height="642" alt="Screenshot_12" src="https://github.com/user-attachments/assets/9d37ca83-d313-40e1-a972-f40ae942d90d" />
 <img width="1055" height="899" alt="Screenshot_10" src="https://github.com/user-attachments/assets/20a2b8a6-ffae-490b-bc55-4bd21be081a1" />
-<img width="1058" height="901" alt="Screenshot_9" src="https://github.com/user-attachments/assets/ba596b05-fe86-441e-9ae8-817358e76ec3" />
 
 ---
 
